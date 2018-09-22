@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>API Test</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+</head>
+
+<body>
+
+  <form method="get" action="https://alloscomp.com/bitcoin/calculator/json" target="_blank">
+    <table>
+        <tr><td>Difficulty Factor</td><td><input type='text' name='difficulty' value="7.15263335191e+12" /></td><td></td></tr>
+        <tr>
+            <td>Hash Rate</td>
+            <td><input type="text" name="hashrate" value="" /></td>
+            <td>
+                <select name="hashrate_unit">
+                    <option value="mhs" >MH/s</option>
+                    <option value="ghs" selected>GH/s</option>
+                    <option value="ths" >TH/s</option>
+                </select>
+                
+            </td>
+        </tr>
+        <tr><td>Exchange Rate</td><td><input type="text" name="exchange_rate" value="6682.43" /></td><td>($/BTC) </td></tr>
+        <tr><td>BTC / Block</td><td>12.50000000</td><td></td></tr>
+
+
+  </table>
+  <input type="submit" class="btn" id="calcbutton" value="Calculate"></p>
+  </form>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  
+</body>
+
+</html>
