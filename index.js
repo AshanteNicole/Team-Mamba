@@ -29,6 +29,11 @@ function getCurrentPrice(coinSymbol) {
   }
 }
 
+
+function formatNumber(num) {
+  return (num).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+}
+
 // Timer function that checks for the latest Crypto Currency Data
 // function startTimer() {
 //   console.log("startTimer() has been called."); // Remove this line for the final product
@@ -77,12 +82,12 @@ function renderUserInfo() {
   });
 }
 
+
 function checkCurrentCoinData() {
   // Write code here to download latest cryptocurrency data from API
 
   for (let i = 0; i < topFive.length; i++) {
     let coinID = topFive[i]
-
     let tableRowElement = $("<tr>");
     let nameCell = $("<td>")
       .attr("class", "text-center")
@@ -95,23 +100,22 @@ function checkCurrentCoinData() {
       .text(coinMarketCapData["data"][coinID]["rank"]);
     let priceCell = $("<td>")
       .attr("class", "text-center")
-      .text(coinMarketCapData["data"][coinID]["quotes"]["USD"]["price"]);
+      .text("$" + formatNumber(coinMarketCapData["data"][coinID]["quotes"]["USD"]["price"]));
     let marketCapCell = $("<td>")
       .attr("class", "text-center")
-      .text(coinMarketCapData["data"][coinID]["quotes"]["USD"]["market_cap"]);
+      .text("$" + formatNumber(coinMarketCapData["data"][coinID]["quotes"]["USD"]["market_cap"]));
     let percentageChange1hCell = $("<td>")
       .attr("class", "text-center")
-      .text(coinMarketCapData["data"][coinID]["quotes"]["USD"]["percent_change_1h"]);
+      .text(coinMarketCapData["data"][coinID]["quotes"]["USD"]["percent_change_1h"] + "%");
     let percentageChange24hCell = $("<td>")
       .attr("class", "text-center")
-      .text(coinMarketCapData["data"][coinID]["quotes"]["USD"]["percent_change_24h"]);
+      .text(coinMarketCapData["data"][coinID]["quotes"]["USD"]["percent_change_24h"] + "%");
     let percentageChange7dCell = $("<td>")
       .attr("class", "text-center")
-      .text(coinMarketCapData["data"][coinID]["quotes"]["USD"]["percent_change_7d"]);
+      .text(coinMarketCapData["data"][coinID]["quotes"]["USD"]["percent_change_7d"] + "%");
     let lastUpdatedCell = $("<td>")
       .attr("class", "text-center")
       .text(moment(coinMarketCapData["data"][coinID]["last_updated"] * 1000));
-
     tableRowElement.append(nameCell)
       .append(symbolCell)
       .append(rankCell)
@@ -121,10 +125,9 @@ function checkCurrentCoinData() {
       .append(percentageChange24hCell)
       .append(percentageChange7dCell)
       .append(lastUpdatedCell);
-    $("#current-stats-div").append(tableRowElement);
-
+    $("#current-stats-table").append(tableRowElement);
   }
-
+  $("#current-stats-status-div").append(`Updated: ${Date()}`);
 }
 
 
@@ -133,32 +136,48 @@ function startPortfolioObserver() {
   console.log("startPortfolioObserver() has been called."); // Remove this line for the final product
   personalTransactionsRef.child(currentUserUID).on("value", function (snapshot) {
     journalSnapshot = snapshot.val();
-    $("#my-transactions-div").empty();
+    $("#my-transactions-table").empty();
 
     for (var key in journalSnapshot) {
-
-      var tableRowElement = $("<tr>");
-      var recordIdCell = $("<td>")
+      let tableRowElement = $("<tr>");
+      let recordIdCell = $("<td>")
         .attr("class", "text-center")
         .text(key);
-      var cryptoCurrencyCell = $("<td>")
+      let cryptoCurrencyCell = $("<td>")
         .attr("class", "text-center")
         .text(journalSnapshot[key]["cryptocurrency"]);
-      var unitPriceCell = $("<td>")
+      let unitPriceCell = $("<td>")
         .attr("class", "text-center")
-        .text(journalSnapshot[key]["cryptocurrencyprice"]);
-      var quantityCell = $("<td>")
+        .text("$" + formatNumber(journalSnapshot[key]["cryptocurrencyprice"]));
+      let quantityCell = $("<td>")
         .attr("class", "text-center")
         .text(journalSnapshot[key]["quantity"]);
-      var totalPriceCell = $("<td>")
+      let totalPriceCell = $("<td>")
         .attr("class", "text-center")
-        .text(journalSnapshot[key]["totalprice"]);
-      var transactionTimeCell = $("<td>")
+        .text("$" + formatNumber(journalSnapshot[key]["totalprice"]));
+      let transactionTimeCell = $("<td>")
         .attr("class", "text-center")
-        .text(journalSnapshot[key]["cryptocurrency"]);
-      var closeButtonSCE = $("<td>")
-        .attr("class", "text-center")
-        .text("x");
+        .text(journalSnapshot[key]["transactiondatetime"]);
+      let closeButtonSCE = $("<td>")
+        .attr("class", "remove-train-button btn btn-danger")
+        .attr("data-record-id", key)
+        .html("&times")
+        .on("click", function () {
+          let recordID = $(this).attr("data-record-id");
+          swal({
+            title: "Warning!",
+            text: `Are you sure you want to remove record ${recordID}?`,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes",
+            closeOnConfirm: false
+          },
+            function () {
+              personalTransactionsRef.child(currentUserUID).child(recordID).remove();
+              swal("Deleted!", `Record ${recordID} has been deleted.`, "success");
+            });
+        });
       tableRowElement.append(recordIdCell)
         .append(cryptoCurrencyCell)
         .append(cryptoCurrencyCell)
@@ -167,14 +186,10 @@ function startPortfolioObserver() {
         .append(totalPriceCell)
         .append(transactionTimeCell)
         .append(closeButtonSCE);
-      $("#my-transactions-div").append(tableRowElement);
-
+      $("#my-transactions-table").append(tableRowElement);
     }
-
-    $("#my-transactions-div").append(`Updated: ${Date()}`);
-
+    $("#my-transactions-status-div").append(`Updated: ${Date()}`);
     calculatePortfolioSummary();
-
   }, function (errorObject) { // Error handling
     console.log("Errors handled: " + errorObject.code);
   });
@@ -196,17 +211,15 @@ function calculatePortfolioSummary() {
     coinCounts[journalSnapshot[key]["cryptocurrency"]] += parseFloat(journalSnapshot[key]["quantity"]);
   }
 
-
   for (var key in coinCounts) {
     investmentCurrentMarketValue += coinCounts[key] * getCurrentPrice(key);
   }
 
   $("#portfolio-summary-div").empty();
-  $("#portfolio-summary-div").append(`Total investment: ${investmentTotal} <br/>`);
+  $("#portfolio-summary-div").append(`Total investment: $${formatNumber(investmentTotal)} <br/>`);
   $("#portfolio-summary-div").append(JSON.stringify(coinCounts) + "<br/>");
-  $("#portfolio-summary-div").append(`Current investment market value: ${investmentCurrentMarketValue} <br/>`);
+  $("#portfolio-summary-div").append(`Current investment market value: $${formatNumber(investmentCurrentMarketValue)} <br/>`);
   $("#portfolio-summary-div").append(`Updated: ${Date()}`);
-
 }
 
 
@@ -245,24 +258,7 @@ $("#record-transaction-button").on("click", function (event) {
     "quantity": parseFloat(cryptoCurrencyQtyInput),
     "totalprice": (parseFloat(cryptoCurrencyPriceInput) * parseFloat(cryptoCurrencyQtyInput))
   });
-
-  alert("New transaction recorded.");
-
-});
-
-
-// Assign listener for "Remove Record" button
-$("#remove-record").on("click", function (event) {
-  // Don't refresh the page!
-  event.preventDefault();
-
-  // Get value(s) from form;
-  var recordID = $("#record-id").val();
-
-  personalTransactionsRef.child(currentUserUID).child(recordID).remove();
-  swal(`Record #${recordID} has been removed from journal.`);
-  $("#record-id").val("");
-
+  swal("New record added!", "A new record has been added to your journal", "success");
 });
 
 
