@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>repl.it</title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	 crossorigin="anonymous">
+
+	<!-- DateTimePicker CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+
+	<!-- Sweet Alert for Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
+
+	<!-- FireBase CSS -->
+	<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+
+	<!-- jQuery Core 3.3.1 -->
+	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+	<!-- Bootstrap JS Package -->
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	 crossorigin="anonymous"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	 crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	 crossorigin="anonymous"></script>
+
+	<!-- jQuery DatePicker JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"></script>
+
+	<!-- Sweet Alert for Bootstrap JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
+
+	<!-- Moment.JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+
+	<!-- FireBase JS -->
+	<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+
+	<link rel="import" href="shared_components.html">
+
+</head>
+
+<body>
+
+	<div id="include-navbar"></div>
+	<script>
+    var link = document.querySelector('link[rel="import"]');
+    var content = link.import;
+    var element = content.querySelector("#navbar");
+    // document.body.appendChild(element.cloneNode(true));
+    document.querySelector("#include-navbar").appendChild(element.cloneNode(true));
+  </script>
+
+	<div class="container mt-4">
+		<h5>
+			Account Sign-Up Page
+		</h5>
+		<div id="login-div" class="h4">
+			<input type="text" placeholder="First Name" id="new-first-name-input" />
+			<br/>
+			<input type="text" placeholder="Last Name" id="new-last-name-input" />
+			<br/>
+			<input type="email" placeholder="Email Address" id="new-email-input" />
+			<br/>
+			<input type="password" placeholder="Password" id="new-password-input" />
+			<br/>
+			<button id="create-new-account-button">Create New Account</button>
+		</div>
+	</div>
+
+
+	<script src="shared_components.js"></script>
+	<script src="signup.js"></script>
+
+	<script>
+		</script
+
+</body>
+
+</html>
