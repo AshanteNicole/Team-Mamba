@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>repl.it</title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	 crossorigin="anonymous">
+
+	<!-- DateTimePicker CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+
+	<!-- Sweet Alert for Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
+
+	<!-- FireBase CSS -->
+	<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+
+	<!-- jQuery Core 3.3.1 -->
+	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+	<!-- Bootstrap JS Package -->
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	 crossorigin="anonymous"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	 crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	 crossorigin="anonymous"></script>
+
+	<!-- jQuery DatePicker JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"></script>
+
+	<!-- Sweet Alert for Bootstrap JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
+
+	<!-- Moment.JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+
+	<!-- FireBase JS -->
+	<script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+
+	<link rel="import" href="shared_components.html">
+
+</head>
+
+<body>
+
+	<div id="include-navbar"></div>
+	<script>
+		var link = document.querySelector('link[rel="import"]');
+    var content = link.import;
+    var element = content.querySelector("#navbar");
+    document.querySelector("#include-navbar").appendChild(element.cloneNode(true));
+	</script>
+
+	<div class="authenticated-invisible">
+
+		<!-- Start Login Form -->
+		<br />
+		<br />
+		<div class="container" id="login-form">
+			<h3 class="mb-4">Login</h3>
+			<label>Email:</label>
+			<br />
+			<input class="h4" type="email" placeholder="username" id="username-input" />
+			<br />
+			<label>Password:</label>
+			<br />
+			<input class="h4" type="password" placeholder="password" id="password-input" />
+			<button class="h4" id="login-button">Login</button>
+			<br /> <br />
+			<a>If you do not have an account, please use the sign-up page.</a>
+		</div>
+		<!-- End Login Form -->
+	</div>
+
+
+	<div class="authenticated-visible">
+
+		<br />
+		<br />
+		<div class="container" id="main-div">
+			<!-- Start Record Transactions Div -->
+			<div class="h4">Record transactions to journal</div>
+			<input type="text" placeholder="Date/Time" id="transaction-date-time-input" />
+			<select id="crypto-currency-input">
+        <option disabled selected value> -- Crypto Currency -- </option>
+        <option value="BTC">Bitcoin</option>
+        <option value="LTC">Lite Coin</option>
+        <option value="ZEC">Z Cash</option>
+        <option value="ETH">Etherium</option>
+        <option value="XRP">Ripple</option>
+      </select>
+			<input type="text" placeholder="Price" id="crypto-currency-price-input" />
+			<input type="text" placeholder="Quantity" id="crypto-currency-qty-input" />
+			<button id="record-transaction-button">Record Transaction</button>
+			<!-- End Record Transactions Div -->
+			<br />
+			<br />
+
+			<!-- <div>
+				<input type="text" placeholder="Record ID" id="record-id" />
+				<button id="remove-record">Remove Record</button>
+			</div> -->
+
+			<div class="mt-4">
+				<div class="h4">My Profile</div>
+				<div id="current-user-info"></div>
+			</div>
+			<div class="mt-4">
+				<div class="h4">Portfolio Summary</div>
+				<div id="portfolio-summary-div"></div>
+				<div id="portfolio-summary-status-div"></div>
+			</div>
+
+			<div class="mt-4">
+				<div class="h4">Current Crypto Stats</div>
+
+				<div>
+					<table class="table table-striped">
+						<thead class="bg-primary text-light">
+							<tr>
+								<th scope="col" class="text-center">Crypto-Currency Name</th>
+								<th scope="col" class="text-center">Symbol</th>
+								<th scope="col" class="text-center">Rank</th>
+								<th scope="col" class="text-center">Price</th>
+								<th scope="col" class="text-center">Market Cap</th>
+								<th scope="col" class="text-center">Pct Chg 1-hr</th>
+								<th scope="col" class="text-center">Pct Chg 24-hr</th>
+								<th scope="col" class="text-center">Pct Chg 7-day</th>
+								<th scope="col" class="text-center">Last Updated</th>
+							</tr>
+						</thead>
+						<tbody id="current-stats-table">
+						</tbody>
+					</table>
+				</div>
+				<div id="current-stats-status-div"></div>
+			</div>
+
+			<div class="mt-4">
+				<div class="h4">My Transactions</div>
+
+				<div>
+					<table class="table table-striped">
+						<thead class="bg-primary text-light">
+							<tr>
+								<th scope="col" class="text-center">Record ID</th>
+								<th scope="col" class="text-center">Crypto-Currency</th>
+								<th scope="col" class="text-center">Unit Price</th>
+								<th scope="col" class="text-center">Quantity</th>
+								<th scope="col" class="text-center">Total Price</th>
+								<th scope="col" class="text-center">Transaction Time</th>
+								<th scope="col" class="text-center"> </th>
+							</tr>
+						</thead>
+						<tbody id="my-transactions-table">
+						</tbody>
+					</table>
+				</div>
+				<div id="my-transactions-status-div"></div>
+			</div>
+
+			<br />
+			<br />
+
+		</div>
+
+
+
+
+	</div>
+
+	<script src="shared_components.js"></script>
+	<script src="coinmarketcap.js"></script>
+	<script src="index.js"></script>
+
+</body>
+
+</html>
