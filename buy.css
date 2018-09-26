@@ -1,0 +1,113 @@
+
+i { 
+    font-style: italic;
+}
+
+h1, h2 {
+    font-family: 'Georgia', Times, Times New Roman, serif;
+    font-weight: bold;
+    color: #000000;
+    border-bottom: 3px solid #dddddd;
+}
+
+h1 {
+    font-size: 2em;
+    padding-bottom: 40px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.3em;
+    padding-bottom: 25px;
+}
+
+header {
+    width: 100%;
+
+    background-color: white;
+    border-bottom: 4px solid #cccccc;
+    font-family: 'Georgia', Times, Times New Roman, serif;
+    margin-bottom: 40px;
+}
+
+    
+    #myName {
+        height: 77px;
+    
+        line-height: 77px;
+        background-color: #000000;
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: whitesmoke;
+    }
+    
+    nav {
+        height: 76px;
+        float: right;
+        background-color: white;
+    }
+
+.navButton {
+    display: inline-block;
+    height: 100%;
+    line-height: 80px;
+    font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.navButton a {
+   
+    color: #999999;
+    text-decoration: none;
+}
+
+#bodyContent {
+
+}
+
+#bodyContent::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+    #mainContent {
+        width: 100%;
+        padding: 40px 30px 40px 30px;
+        margin-bottom: 50px;
+        background-color: white;
+        box-shadow: 4px 4px 15px 2px #333333;
+        float: left;
+        font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+        color: #777777;
+        font-size: 1.2em;
+        line-height: 2em;
+    }
+
+
+
+.thumbnail {
+    position: relative;
+    margin-bottom: 40px;
+    cursor: pointer;
+    transition: all .8s ease;
+}
+
+.thumbnail:hover {
+    transform: scale(1.1);
+}
+
+.thumbnail img {
+   
+    max-width: 100%;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
