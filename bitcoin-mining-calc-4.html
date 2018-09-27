@@ -5,123 +5,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>API Test</title>
+    <title>Crypto Money Maker</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="bitcoin-mining-calc-4-style.css">
 </head>
 
 <body>
 
+    <div id="include-navbar"></div>
+
     <div class="container">
-        <form>
+
+        <div class="calculator-title">Bitcoin Mining Calculator</div>
+
+        <form id="calcForm">
             <div class="form-group-responsive">
-                <table class="table">
-                    <td class="bg-primary text-light">Bitcoin Mining Calculator</td>
-                </table>
+                <label class="font-weight-bold" for="hashrate">Hashrate: </label>
 
-                <label class="font-weight-bold" for="hashrate">Hashrate (GH/s): </label>
+                <select name="hashrate_unit" id="hashrate-selector">
+                    <option value="mhs">MH/s</option>
+                    <option value="ghs" selected>GH/s</option>
+                    <option value="ths">TH/s</option>
+                </select>
+
                 <input type="text" class="form-control" id="hashrate" placeholder="Please enter hashrate to get values">
+                <button type="submit" id="submitHashrate" class="form-button btn btn-primary">Submit</button>
                 <br>
-
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">Profits</th>
-                            <th scope="col">Bitcoins</th>
-                            <th scope="col">Dollars (USD)</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">per Day</th>
-                            <td id="btc_day"></td>
-                            <td id="dol_day"></td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row">per Week</th>
-                            <td id="btc_week"></td>
-                            <td id="dol_week"></td>
-
-                        </tr>
-                        <tr>
-                            <th scope="row">per Month</th>
-                            <td id="btc_month"></td>
-                            <td id="dol_month"></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <!-- How to make the th below smaller so there isn't so much blank space? -->
-
-                <table class="table table-bordered">
-
-                    <tbody>
-                        <tr>
-                            <th>Difficulty Factor</th>
-                            <td id="difficulty"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Exchange Rate</th>
-                            <td id="exchange_rate"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">BTC / Block</th>
-                            <td id="bc_per_block"></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <button type="submit" class="form-button btn btn-primary">Submit</button>
+            </div>
         </form>
-    </div>
+
+        <table class="calc-table table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Profits</th>
+                    <th scope="col">Bitcoins</th>
+                    <th scope="col">Dollars (USD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">per Day</th>
+                    <td id="btc_day"></td>
+                    <td id="dol_day"></td>
+                </tr>
+                <tr>
+                    <th scope="row">per Week</th>
+                    <td id="btc_week"></td>
+                    <td id="dol_week"></td>
+                </tr>
+                <tr>
+                    <th scope="row">per Month</th>
+                    <td id="btc_month"></td>
+                    <td id="dol_month"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="calc-table table table-bordered">
+
+            <tbody>
+                <tr>
+                    <th>Difficulty Factor</th>
+                    <td id="difficulty"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Exchange Rate</th>
+                    <td id="exchange_rate"></td>
+                </tr>
+                <tr>
+                    <th scope="row">BTC / Block</th>
+                    <td id="bc_per_block"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Added link to the jQuery Library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <!-- shared_components -->
+        <script src="shared_components.js"></script>
+
+        <!-- javascript -->
+        <script src="calc.js"></script>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script type="text/javascript">
-
-        $(".form-button").on("click", function (event) {
-            var hashrate = $('#hashrate').val();
-            event.preventDefault();
-
-            $("#hashrate").val();
-
-            var queryURL = "https://alloscomp.com/bitcoin/calculator/json?hashrate=" + hashrate;
-
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function (response) {
-
-                $("#difficulty").html(response.difficulty);
-
-                $("#exchange_rate").html('$ ' + response.exchange_rate);
-
-                $("#bc_per_block").html(response.bc_per_block);
-
-                $("#btc_day").html('₿ ' + response.coins_per_hour * 24 * 1000000000);
-
-                $("#btc_week").html('₿ ' + response.coins_per_hour * 24 * 7 * 1000000000);
-
-                $("#btc_month").html('₿ ' + response.coins_per_hour * 24 * 7 * 4 * 1000000000);
-
-                $("#dol_day").html('$ ' + response.dollars_per_hour * 24 * 1000000000);
-
-                $("#dol_week").html('$ ' + response.dollars_per_hour * 24 * 7 * 1000000000);
-
-                $("#dol_month").html('$ ' + response.dollars_per_hour * 24 * 7 * 4 * 1000000000);
-
-                
-
-            });
-
-        });
-
-    </script>
 
 </body>
 
