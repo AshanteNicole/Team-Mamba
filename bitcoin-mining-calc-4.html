@@ -25,7 +25,14 @@
 
         <form id="calcForm">
             <div class="form-group-responsive">
-                <label class="font-weight-bold" for="hashrate">Hashrate (GH/s): </label>
+                <label class="font-weight-bold" for="hashrate">Hashrate: </label>
+
+                <select name="hashrate_unit" id="hashrate-selector">
+                    <option value="mhs">MH/s</option>
+                    <option value="ghs" selected>GH/s</option>
+                    <option value="ths">TH/s</option>
+                </select>
+
                 <input type="text" class="form-control" id="hashrate" placeholder="Please enter hashrate to get values">
                 <button type="submit" id="submitHashrate" class="form-button btn btn-primary">Submit</button>
                 <br>
@@ -76,10 +83,6 @@
                 </tr>
             </tbody>
         </table>
-
-
-
-
 
         <!-- Added link to the jQuery Library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

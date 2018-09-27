@@ -4,8 +4,18 @@ $(document).ready(function () {
 
 
 $("#submitHashrate").on("click", function (event) {
-    event.preventDefault();
     var hashrate = $('#hashrate').val();
+    event.preventDefault();
+    var hashrateSelector = $("#hashrate-selector").val();
+
+            if (hashrateSelector == 'mhs') {
+                hashrate = hashrate / 1000;
+            } else if (hashrateSelector == 'ths') {
+                hashrate = hashrate * 1000;
+            } else {
+                hashrate = hashrate;
+            }
+            console.log(hashrate);
 
     var queryURL = "https://alloscomp.com/bitcoin/calculator/json?hashrate=" + hashrate;
 
