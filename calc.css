@@ -1,0 +1,12 @@
+f.calculator-title{
+    color: #f8f9fa!important;
+    background-color: #007bff!important;
+    padding: .75rem;
+}
+
+.calc-table, #calcForm, .calculator-title{
+    width: 80% !important;
+    margin: 20px auto !important;
+
+}
+
