@@ -10,6 +10,7 @@ var currentUserUID = null
   , coinCounts = null
   , currentCoinDataSnapshot = null
   , journalSnapshot = null
+  , coinMarketCapData = {}
   , coinCounts = {};
 
 // Set references to the FireBase datastore
@@ -85,7 +86,18 @@ function renderUserInfo() {
 
 function checkCurrentCoinData() {
   // Write code here to download latest cryptocurrency data from API
+  var queryURL = "https://api.coinmarketcap.com/v2/ticker/";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  })
+    .then(function (response) {
+      coinMarketCapData = response;
+      renderCoinData();
+    });
+}
 
+function renderCoinData() {
   for (let i = 0; i < topFive.length; i++) {
     let coinID = topFive[i]
     let tableRowElement = $("<tr>");
@@ -115,7 +127,7 @@ function checkCurrentCoinData() {
       .text(coinMarketCapData["data"][coinID]["quotes"]["USD"]["percent_change_7d"] + "%");
     let lastUpdatedCell = $("<td>")
       .attr("class", "text-center")
-      .text(moment(coinMarketCapData["data"][coinID]["last_updated"] * 1000));
+      .text(moment(coinMarketCapData["data"][coinID]["last_updated"] * 1000).format('YYYY-MMM-D, h:mm a'));
     tableRowElement.append(nameCell)
       .append(symbolCell)
       .append(rankCell)
@@ -127,7 +139,7 @@ function checkCurrentCoinData() {
       .append(lastUpdatedCell);
     $("#current-stats-table").append(tableRowElement);
   }
-  $("#current-stats-status-div").append(`Updated: ${Date()}`);
+  $("#current-stats-status-div").append(`Updated: ${moment(Date()).format('YYYY-MMM-D, h:mm:ss a')}`);
 }
 
 
@@ -157,7 +169,7 @@ function startPortfolioObserver() {
         .text("$" + formatNumber(journalSnapshot[key]["totalprice"]));
       let transactionTimeCell = $("<td>")
         .attr("class", "text-center")
-        .text(journalSnapshot[key]["transactiondatetime"]);
+        .text(moment(journalSnapshot[key]["transactiondatetime"]).format('YYYY-MMM-D, h:mm a'));
       let closeButtonSCE = $("<td>")
         .attr("class", "remove-train-button btn btn-danger")
         .attr("data-record-id", key)
@@ -188,7 +200,7 @@ function startPortfolioObserver() {
         .append(closeButtonSCE);
       $("#my-transactions-table").append(tableRowElement);
     }
-    $("#my-transactions-status-div").append(`Updated: ${Date()}`);
+    $("#my-transactions-status-div").append(`Updated: ${moment(Date()).format('YYYY-MMM-D, h:mm:ss a')}`);
     calculatePortfolioSummary();
   }, function (errorObject) { // Error handling
     console.log("Errors handled: " + errorObject.code);
@@ -219,7 +231,8 @@ function calculatePortfolioSummary() {
   $("#portfolio-summary-div").append(`Total investment: $${formatNumber(investmentTotal)} <br/>`);
   $("#portfolio-summary-div").append(JSON.stringify(coinCounts) + "<br/>");
   $("#portfolio-summary-div").append(`Current investment market value: $${formatNumber(investmentCurrentMarketValue)} <br/>`);
-  $("#portfolio-summary-div").append(`Updated: ${Date()}`);
+  $("#portfolio-summary-div").append(`Gain/Loss: $${formatNumber(investmentCurrentMarketValue-investmentTotal)} <br/>`);
+  $("#portfolio-summary-div").append(`Updated: ${moment(Date()).format('YYYY-MMM-D, h:mm:ss a')}`);
 }
 
 
@@ -272,8 +285,8 @@ $("#transaction-date-time-input").datetimepicker({
 
 
 // Enter username and password automatically. Remove for the final product.
-$("#username-input").val("bob@company.com");
-$("#password-input").val("password");
+// $("#username-input").val("bob@company.com");
+// $("#password-input").val("password");
 
 
 // Procedure for processing authentication states
@@ -286,7 +299,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
     // Start FireBase components
     checkCurrentCoinData();
-    renderUserInfo();
+    // renderUserInfo();
     startPortfolioObserver();
 
   } else { // When a user is signed out
